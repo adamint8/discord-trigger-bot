@@ -9,23 +9,23 @@ class WebhookDatabase:
     def __init__(self):
         self.db_file = DB_FILE
         self._ensure_db_exists()
-    
+
     def _ensure_db_exists(self):
-        """יצירת קובץ DB אם לא קיים"""
+        """Create DB file if it does not exist"""
         if not os.path.exists(self.db_file):
             with open(self.db_file, 'w', encoding='utf-8') as f:
                 json.dump({"channels": {}}, f, indent=2)
-    
+
     def _load_data(self) -> Dict:
-        """טעינת נתונים מהקובץ"""
+        """Load data from file"""
         try:
             with open(self.db_file, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             return {"channels": {}}
-    
+
     def _save_data(self, data: Dict) -> bool:
-        """שמירת נתונים לקובץ"""
+        """Save data to file"""
         try:
             with open(self.db_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -33,9 +33,9 @@ class WebhookDatabase:
         except Exception as e:
             print(f"❌ Error saving data: {e}")
             return False
-    
+
     def add_channel_webhook(self, channel_id: str, webhook_url: str, guild_id: str) -> bool:
-        """הוספת webhook לערוץ"""
+        """Add webhook to a channel"""
         try:
             data = self._load_data()
             data["channels"][channel_id] = {
@@ -48,9 +48,9 @@ class WebhookDatabase:
         except Exception as e:
             print(f"❌ Error adding webhook: {e}")
             return False
-    
+
     def get_channel_webhook(self, channel_id: str) -> Optional[str]:
-        """קבלת webhook URL לערוץ"""
+        """Get webhook URL for a channel"""
         try:
             data = self._load_data()
             channel_data = data["channels"].get(channel_id)
@@ -60,9 +60,9 @@ class WebhookDatabase:
         except Exception as e:
             print(f"❌ Error getting webhook: {e}")
             return None
-    
+
     def remove_channel_webhook(self, channel_id: str) -> bool:
-        """הסרת webhook מערוץ"""
+        """Remove webhook from a channel"""
         try:
             data = self._load_data()
             if channel_id in data["channels"]:
@@ -72,9 +72,9 @@ class WebhookDatabase:
         except Exception as e:
             print(f"❌ Error removing webhook: {e}")
             return False
-    
+
     def get_all_webhooks(self, guild_id: str) -> List[Dict]:
-        """קבלת כל הwebhooks של שרת"""
+        """Get all webhooks for a guild"""
         try:
             data = self._load_data()
             results = []
@@ -91,9 +91,9 @@ class WebhookDatabase:
         except Exception as e:
             print(f"❌ Error getting all webhooks: {e}")
             return []
-    
+
     def toggle_webhook(self, channel_id: str) -> bool:
-        """הפעלה/כיבוי webhook"""
+        """Enable/disable webhook"""
         try:
             data = self._load_data()
             if channel_id in data["channels"]:
