@@ -1,8 +1,8 @@
 {
   "channels": {
-    "1397294231906947224": {
-      "webhook_url": "https://n8n-6om9f1-u52009.vm.elestio.app/webhook/68033974-03dc-4381-aa7e-50328082eac1",
-      "guild_id": "1397162107073466500",
+    "text": {
+      "webhook_url": "test",
+      "guild_id": "test",
       "created_at": "2025-07-26T04:02:11.237411",
       "active": true
     }
